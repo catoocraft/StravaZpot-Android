@@ -5,6 +5,7 @@ import com.sweetzpot.stravazpot.authenticaton.model.LoginResult;
 import com.sweetzpot.stravazpot.common.api.AuthenticationConfig;
 import com.sweetzpot.stravazpot.common.api.StravaAPITest;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -34,6 +35,7 @@ public class AuthenticationAPITest extends StravaAPITest {
         assertLoginResultParsedCorrectly(loginResult);
     }
 
+    @Ignore
     @Test
     public void shouldDeauthorize() throws Exception {
         enqueueToken();

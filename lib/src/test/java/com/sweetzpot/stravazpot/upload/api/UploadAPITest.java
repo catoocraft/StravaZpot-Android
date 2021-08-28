@@ -62,7 +62,7 @@ public class UploadAPITest extends StravaAPITest {
     }
 
     private void assertUploadStatusParsedCorrectly(UploadStatus uploadStatus) {
-        assertThat(uploadStatus.getId(), is(16486788));
+        assertThat(uploadStatus.getId(), is(16486788L));
         assertThat(uploadStatus.getExternalID(), is(equalTo("test.fit")));
         assertThat(uploadStatus.getError(), is(nullValue()));
         assertThat(uploadStatus.getStatus(), is(equalTo("Your activity is still being processed.")));
