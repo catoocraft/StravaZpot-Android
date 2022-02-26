@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/StravaZpot.iml" filepath="$PROJECT_DIR$/StravaZpot.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/lib/lib.iml" filepath="$PROJECT_DIR$/lib/lib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/StravaZpot-Android.iml" filepath="$PROJECT_DIR$/.idea/modules/StravaZpot-Android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/StravaZpot-Android.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/StravaZpot-Android.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/lib/StravaZpot-Android.lib.iml" filepath="$PROJECT_DIR$/.idea/modules/lib/StravaZpot-Android.lib.iml" />
     </modules>
   </component>
 </project>
