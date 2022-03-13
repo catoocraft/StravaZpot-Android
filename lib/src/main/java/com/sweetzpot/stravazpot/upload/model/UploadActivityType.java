@@ -32,7 +32,8 @@ public enum UploadActivityType {
     WEIGHT_TRAINING("weighttraining"),
     YOGA("yoga"),
     WORKOUT("workout"),
-    VIRTUAL_RIDE("virtualride");
+    VIRTUAL_RIDE("virtualride"),
+    VIRTUAL_RUN("virtualrun");
 
     private String rawValue;
 
