@@ -3,11 +3,11 @@ package com.sweetzpot.stravazpot.authenticaton.ui;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
-import android.widget.ImageButton;
+import androidx.appcompat.widget.AppCompatImageButton;
 
 import com.sweetzpot.stravazpot.R;
 
-public class StravaLoginButton extends ImageButton {
+public class StravaLoginButton extends AppCompatImageButton {
     public StravaLoginButton(Context context) {
         this(context, null);
     }
