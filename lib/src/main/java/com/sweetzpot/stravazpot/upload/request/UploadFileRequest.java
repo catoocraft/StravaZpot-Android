@@ -7,13 +7,22 @@ import com.sweetzpot.stravazpot.upload.model.UploadStatus;
 import com.sweetzpot.stravazpot.upload.rest.UploadRest;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.EOFException;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import okhttp3.internal.Util;
+import okio.BufferedSink;
+import okio.Okio;
+import okio.Source;
 import retrofit2.Call;
 
 public class UploadFileRequest {
+    public interface ProgressCallback {
+         void progressUpdate(float fractionCompleted);
+    }
 
     private final File file;
     private final UploadRest restService;
@@ -26,6 +35,7 @@ public class UploadFileRequest {
     private boolean isCommute;
     private DataType dataType;
     private String externalID;
+    private ProgressCallback progressCallback;
 
     public UploadFileRequest(File file, UploadRest restService, UploadAPI uploadAPI) {
         this.file = file;
@@ -73,8 +83,13 @@ public class UploadFileRequest {
         return this;
     }
 
+    public UploadFileRequest withProgressCallback(ProgressCallback progressCallback) {
+        this.progressCallback = progressCallback;
+        return this;
+    }
+
     public UploadStatus execute() {
-        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+        RequestBody requestFile = requestBodyFromFile(MediaType.parse("multipart/form-data"), file, progressCallback);
 
         MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
 
@@ -92,10 +107,49 @@ public class UploadFileRequest {
     }
 
     private RequestBody requestBodyFromString(String str) {
+        if (str == null) {
+            return null;
+        }
+
         return RequestBody.create(MultipartBody.FORM, str);
     }
 
     private Integer booleanToInt(boolean b) {
         return b ? 1 : 0;
+    }
+
+    // This is an inlined copy of okhttp3.RequestBody.create() in order to provide a simpple upload progress callback mechanism
+    private RequestBody requestBodyFromFile(final MediaType contentType, final File file, final ProgressCallback progressCallback) {
+        if (file == null) throw new NullPointerException("content == null");
+
+        return new RequestBody() {
+             @Override public MediaType contentType() {
+                 return contentType;
+             }
+
+             @Override public long contentLength() {
+                 return file.length();
+             }
+
+             @Override public void writeTo(BufferedSink sink) throws IOException {
+                 Source source = null;
+                 try {
+                     source = Okio.source(file);
+                     float progressCoefficient = 1.0f / file.length();
+                     float bytesWritten = 0;
+                     while (true) {
+                         sink.write(source, 8192);
+                         bytesWritten += 8192;
+                         if (progressCallback != null) {
+                             progressCallback.progressUpdate(bytesWritten * progressCoefficient);
+                         }
+                     }
+                 } catch (EOFException e) {
+                     // write() signals it's got to end of file by throwing an exception :eyeroll:
+                 } finally {
+                     Util.closeQuietly(source);
+                 }
+             }
+         };
     }
 }
